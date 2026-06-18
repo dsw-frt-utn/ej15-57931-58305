@@ -15,16 +15,6 @@ namespace Dsw2026Ej15.Domain.Entitys
             _description = description;
         }
 
-        
-
-
-
-
-
-
-
-
-
 
     }
 }
