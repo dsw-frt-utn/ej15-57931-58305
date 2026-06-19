@@ -25,11 +25,16 @@ namespace Dsw2026Ej15.Api.Controllers
             {
                 Speciality? speciality = _persistencia.GetSpeciality(dto._specialityId);
                 List<string> errors = DoctorsValidator.ValidateNew(dto._name, dto._licenseNumber, speciality);
-                if (errors.Count > 0) { throw new ValidationException(string.Join("-", errors)); }
-                var doctor = new Doctor(dto._name, dto._licenseNumber   , speciality);
+            //if (errors.Count > 0) { throw new ValidationException(string.Join("-", errors)); }
+            if (errors.Count > 0)
+            {
+                return BadRequest(new { Message = "Errores de validación", Errors = errors });
+            }
+            var doctor = new Doctor(dto._name, dto._licenseNumber   , speciality);
                 _persistencia.AñadirDoctor(doctor);
                 return Created();
-            }
+                
+        }
 
             //Get api/doctors
             [HttpGet]
