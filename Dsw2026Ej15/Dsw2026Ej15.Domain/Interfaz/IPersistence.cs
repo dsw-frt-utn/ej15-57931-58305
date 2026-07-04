@@ -15,17 +15,17 @@ namespace Dsw2026Ej15.Domain.Interfaz
 
         void ModificarDoctor(Doctor doctor);
 
-        void EliminarDoctor(Guid id);
+        //void EliminarDoctor(Guid id);
 
-        void DesactivarDoctor(Guid id);
-        List<Speciality> GetSpecialities();
+        //void DesactivarDoctor(Guid id);
+        //List<Speciality> GetSpecialities();
 
         Speciality? GetSpeciality(Guid id);
 
-        void AñadirEspecialidad(Speciality speciality);
+        //void AñadirEspecialidad(Speciality speciality);
 
-        void ModificarEspecialidad(Speciality speciality);
+        //void ModificarEspecialidad(Speciality speciality);
 
-        void EliminarEspecialidad(Guid id);
+        //void EliminarEspecialidad(Guid id);
     }
 }
