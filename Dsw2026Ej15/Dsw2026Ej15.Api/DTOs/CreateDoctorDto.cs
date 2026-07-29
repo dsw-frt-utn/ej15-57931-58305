@@ -2,10 +2,10 @@
 {
     public class CreateDoctorDto
     {
-        public string _name { get; set; } = string.Empty;
-        public string _licenseNumber { get; set; } = string.Empty;
-        public Guid _specialityId { get; set; }
-        public bool _isActive { get; set; } = true;
+        public string Name { get; set; } = string.Empty;
+        public string LicenseNumber { get; set; } = string.Empty;
+        public Guid SpecialityId { get; set; }
+
 
     }
 }

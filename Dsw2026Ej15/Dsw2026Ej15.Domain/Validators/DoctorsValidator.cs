@@ -19,7 +19,7 @@ public class DoctorsValidator
         {
             foreach (var doctor in doctors)
             {
-                if (doctor._isActive) { doctorsActive.Add(doctor); }
+                if (doctor.IsActive) { doctorsActive.Add(doctor); }
             }
         }
         return doctorsActive;

@@ -14,64 +14,62 @@ namespace Dsw2026Ej15.Api.Controllers
     {
         private readonly IPersistence _persistencia;
 
-            public DoctorsController(IPersistence persistencia)
-            {
-                _persistencia = persistencia;
-            }
+        public DoctorsController(IPersistence persistencia)
+        {
+            _persistencia = persistencia;
+        }
 
-            //Post api/doctors
-            [HttpPost]
-            public ActionResult CreateDoctor([FromBody] CreateDoctorDto dto)
-            {
-                Speciality? speciality = _persistencia.GetSpeciality(dto._specialityId);
-                List<string> errors = DoctorsValidator.ValidateNew(dto._name, dto._licenseNumber, speciality);
-            //if (errors.Count > 0) { throw new ValidationException(string.Join("-", errors)); }
+        //Post api/doctors
+        [HttpPost]
+        public ActionResult CreateDoctor([FromBody] CreateDoctorDto dto)
+        {
+            Speciality? speciality = _persistencia.GetSpeciality(dto.SpecialityId);
+            List<string> errors = DoctorsValidator.ValidateNew(dto.Name, dto.LicenseNumber, speciality);
             if (errors.Count > 0)
             {
-                return BadRequest(new { Message = "Errores de validación", Errors = errors });
+                throw new ValidationException(string.Join(" - ", errors));
             }
-            var doctor = new Doctor(dto._name, dto._licenseNumber   , speciality);
-                _persistencia.AñadirDoctor(doctor);
-                return Created();
-                
+            var doctor = new Doctor(dto.Name, dto.LicenseNumber, speciality!);
+            _persistencia.AddDoctor(doctor);
+            return Created();
         }
 
-            //Get api/doctors
-            [HttpGet]
-            public ActionResult<IEnumerable<Doctor>> GetDoctors()
-            {
-                var activeDoctors = DoctorsValidator.ActiveDoctors(_persistencia.GetDoctors());
-                return Ok(activeDoctors);
-            }
-
-            //Get api/doctors/{id}
-            [HttpGet("{id}")]
-            public ActionResult<Doctor> GetDoctor(Guid id)
-            {
-                var doctor = _persistencia.GetDoctor(id);
-                if (doctor == null || !doctor._isActive)
-                {
-                    throw new NotFoundException("");
-                }
-                return Ok(new
-                {
-                    doctor._name,
-                    doctor._licenseNumber,
-                    SpecialitiName = doctor._speciality?._name
-                });
-            }
-
-            //Delete api/doctors/{id}
-            [HttpDelete("{id}")]
-            public ActionResult DeleteDoctor(Guid id)
-            {
-                var doctor = _persistencia.GetDoctor(id);
-                if (doctor == null || !doctor._isActive)
-                {
-                    throw new NotFoundException("");
-                }
-                _persistencia.DesactivarDoctor(doctor._id);
-                return NoContent();
-            }
+        //Get api/doctors
+        [HttpGet]
+        public ActionResult<IEnumerable<Doctor>> GetDoctors()
+        {
+            var activeDoctors = DoctorsValidator.ActiveDoctors(_persistencia.GetDoctors());
+            return Ok(activeDoctors);
         }
+
+        //Get api/doctors/{id}
+        [HttpGet("{id}")]
+        public ActionResult<Doctor> GetDoctor(Guid id)
+        {
+            var doctor = _persistencia.GetDoctor(id);
+            if (doctor == null || !doctor.IsActive)
+            {
+                throw new NotFoundException("");
+            }
+            return Ok(new
+            {
+                doctor.Name,
+                doctor.LicenseNumber,
+                SpecialityName = doctor.Speciality?.Name
+            });
+        }
+
+        //Delete api/doctors/{id}
+        [HttpDelete("{id}")]
+        public ActionResult DeleteDoctor(Guid id)
+        {
+            var doctor = _persistencia.GetDoctor(id);
+            if (doctor == null || !doctor.IsActive)
+            {
+                throw new NotFoundException("");
+            }
+            _persistencia.DeactivateDoctor(doctor.Id);
+            return NoContent();
+        }
+    }
 }

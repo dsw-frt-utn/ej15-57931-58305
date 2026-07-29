@@ -6,8 +6,8 @@ namespace Dsw2026Ej15.Data.DTOs
 {
     internal class SpecialityDto
     {
-        public Guid _id { get; set; }
-        public string _name { get; set; } = string.Empty;
-        public string _description { get; set; } = string.Empty;
+        public Guid Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
     }
 }

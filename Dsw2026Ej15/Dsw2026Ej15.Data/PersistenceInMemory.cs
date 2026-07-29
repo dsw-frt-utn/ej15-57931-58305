@@ -12,154 +12,81 @@ namespace Dsw2026Ej15.Data
 
     public class PersistenceInMemory : IPersistence
     {
-
-
         private List<Doctor> Doctors = new List<Doctor>();
-
         private List<Speciality> Specialities = new List<Speciality>();
 
-
         public PersistenceInMemory()
-
         {
-
-            CargarEspecialidades();
-
+            LoadSpecialities();
         }
-
 
         public List<Doctor> GetDoctors() => Doctors;
 
+        public Doctor? GetDoctor(Guid id) => Doctors.Find(d => d.Id == id);
 
-        public Doctor? GetDoctor(Guid id)
+        public void AddDoctor(Doctor doctor) => Doctors.Add(doctor);
 
+        public void UpdateDoctor(Doctor doctor)
         {
-
-            return Doctors.Find(d => d._id == id);
-
-        }
-
-
-        public void AñadirDoctor(Doctor doctor) => Doctors.Add(doctor);
-
-
-        public void ModificarDoctor(Doctor doctor)
-
-        {
-
-            var DoctorExistente = GetDoctor(doctor._id);
-
-            if (DoctorExistente != null)
-
+            var existingDoctor = GetDoctor(doctor.Id);
+            if (existingDoctor != null)
             {
-
-                DoctorExistente._name = doctor._name;
-
-                DoctorExistente._licenseNumber = doctor._licenseNumber;
-
-                DoctorExistente._speciality = doctor._speciality;
-
-                DoctorExistente._isActive = doctor._isActive;
-
+                existingDoctor.Name = doctor.Name;
+                existingDoctor.LicenseNumber = doctor.LicenseNumber;
+                existingDoctor.Speciality = doctor.Speciality;
+                existingDoctor.IsActive = doctor.IsActive;
             }
-
         }
 
-
-
-        public void EliminarDoctor(Guid id)
-
+        public void RemoveDoctor(Guid id)
         {
-
-            Doctor? DoctorEliminar = GetDoctor(id);
-
-            if (DoctorEliminar != null)
-
+            Doctor? doctorToRemove = GetDoctor(id);
+            if (doctorToRemove != null)
             {
-
-                Doctors.Remove(DoctorEliminar);
-
+                Doctors.Remove(doctorToRemove);
             }
-
         }
 
-
-        public void DesactivarDoctor(Guid id)
+        public void DeactivateDoctor(Guid id)
         {
             Doctor? doctorToDeactivate = GetDoctor(id);
-            if (doctorToDeactivate != null && doctorToDeactivate._isActive)
+            if (doctorToDeactivate != null && doctorToDeactivate.IsActive)
             {
-                doctorToDeactivate._isActive = false;
+                doctorToDeactivate.IsActive = false;
             }
         }
-
 
         public List<Speciality> GetSpecialities() => Specialities;
 
+        public Speciality? GetSpeciality(Guid id) => Specialities.Find(s => s.Id == id);
 
-        public Speciality? GetSpeciality(Guid id)
+        public void AddSpeciality(Speciality speciality) => Specialities.Add(speciality);
 
+        public void UpdateSpeciality(Speciality speciality)
         {
-
-            return Specialities.Find(d => d._id == id);
-
+            var existingSpeciality = GetSpeciality(speciality.Id);
+            if (existingSpeciality != null)
+            {
+                existingSpeciality.Name = speciality.Name;
+                existingSpeciality.Description = speciality.Description;
+            }
         }
 
-
-        public void AñadirEspecialidad(Speciality speciality) => Specialities.Add(speciality);
-
-
-        public void ModificarEspecialidad(Speciality speciality)
-
+        public void RemoveSpeciality(Guid id)
         {
-
-            var EspecialidadExistente = GetSpeciality(speciality._id);
-
-            if (EspecialidadExistente != null)
-
+            Speciality? specialityToRemove = GetSpeciality(id);
+            if (specialityToRemove != null)
             {
-
-                EspecialidadExistente._description = speciality._description;
-
-
+                Specialities.Remove(specialityToRemove);
             }
-
         }
 
-
-
-        public void EliminarEspecialidad(Guid id)
-
+        private void LoadSpecialities()
         {
-
-            Doctor? EspecialidadEliminar = GetDoctor(id);
-
-            if (EspecialidadEliminar != null)
-
-            {
-
-                Doctors.Remove(EspecialidadEliminar);
-
-            }
-
-        }
-
-
-        private void CargarEspecialidades()
-        {
-            try
-            {
-                string jsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Source", "specialities.json");
-                var json = File.ReadAllText(jsonPath);
-                var specialities = JsonSerializer.Deserialize<List<SpecialityDto>>(json, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true }) ?? [];
-                Specialities = specialities.Select(s => new Speciality(s._name, s._description, s._id)).ToList();
-
-            }
-            catch (Exception)
-            {
-
-
-            }
+            string jsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "specialities.json");
+            var json = File.ReadAllText(jsonPath);
+            var specialities = JsonSerializer.Deserialize<List<SpecialityDto>>(json, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true }) ?? [];
+            Specialities = specialities.Select(s => new Speciality(s.Name, s.Description, s.Id)).ToList();
         }
     }
 }
