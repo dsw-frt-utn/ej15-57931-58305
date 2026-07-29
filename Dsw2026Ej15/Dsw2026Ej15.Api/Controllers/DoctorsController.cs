@@ -49,7 +49,7 @@ namespace Dsw2026Ej15.Api.Controllers
             var doctor = _persistencia.GetDoctor(id);
             if (doctor == null || !doctor.IsActive)
             {
-                throw new NotFoundException("");
+                throw new NotFoundException("Doctor no encontrado");
             }
             return Ok(new
             {
