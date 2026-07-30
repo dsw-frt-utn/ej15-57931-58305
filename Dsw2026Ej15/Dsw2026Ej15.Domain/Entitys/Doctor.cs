@@ -18,7 +18,12 @@ namespace Dsw2026Ej15.Domain.Entitys
             Speciality = speciality;
         }
 
-
+        private Doctor()
+        {
+            Name = null!;
+            LicenseNumber = null!;
+            Speciality = null!;
+        }
 
     }
 }

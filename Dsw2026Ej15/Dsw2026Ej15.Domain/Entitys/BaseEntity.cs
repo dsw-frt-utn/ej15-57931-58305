@@ -11,6 +11,6 @@ namespace Dsw2026Ej15.Domain.Entitys
         {
             Id = guid ?? Guid.NewGuid();
         }
-
+        protected BaseEntity() { }
     }
 }
