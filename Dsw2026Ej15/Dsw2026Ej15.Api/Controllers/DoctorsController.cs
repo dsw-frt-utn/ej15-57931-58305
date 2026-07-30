@@ -2,9 +2,9 @@
 using Dsw2026Ej15.Domain.Entitys;
 using Microsoft.AspNetCore.Mvc;
 using Dsw2026Ej15.Domain.Interfaz;
-using Dsw2026Ej15.Domain.Validators;
 using Dsw2026Ej15.Domain.Exceptions;
 using Dsw2026Ej15.Api.Models;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace Dsw2026Ej15.Api.Controllers
